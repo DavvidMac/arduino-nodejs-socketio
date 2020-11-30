@@ -1,26 +1,19 @@
-#include <SPI.h>
-#include <Ethernet.h>
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x6C, 0xFE };
-IPAddress ip(192,168,0,225);
-IPAddress server(192,168,0,3);
-
-int buzzer = 8;
+//#include <SPI.h>
+#include <ESP8266WiFi.h>
+int led = 8;
 int pinVal = 0;
 
-EthernetClient client;
-
+WiFiClient client;
 void setup() {
-  Ethernet.begin(mac, ip);
+  // put your setup code here, to run once:
   Serial.begin(9600);
-  delay(1000);
-  Serial.println("Conectando...");
-  if (client.connect(server, 1337)) {
-    Serial.println("Conectado.");
-  } else {
-    Serial.println("Erro: Conexo falhou.");
-  }
-  pinMode(buzzer, OUTPUT);
+  WiFi.begin("TP-LINK_A38740", "Hulksmash"); 
+  Serial.println("conectando"); 
+  while (WiFi.status() != WL_CONNECTED) { 
+    Serial.print("."); 
+    delay(500); 
+ }
 }
 
 void loop() {
@@ -34,7 +27,6 @@ void loop() {
       pinVal = LOW;
   //    client.print('0');
     }
-    digitalWrite(buzzer, pinVal);
+    digitalWrite(led, pinVal);
   }
-
 }
